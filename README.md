@@ -140,13 +140,9 @@ Table 2: Main Game Objects
 
 </div>
 
-Our initial motivation was to create a game with simple controls and an immediately responsive feedback loop, drawing inspiration from classic arcade experiences. During the early ideation phase, each team member proposed different game concepts with varying levels of complexity. For example, one idea was inspired by Fruit Ninja, reimagined as a “cutting homework” game where players slice objects within a limited time. Another proposal was based on Contra, aiming to develop a 2D side-scrolling shooter with platforming elements.
+Our initial goal was to create an accessible arcade-style game with a highly responsive feedback loop. We briefly considered a Fruit Ninja-style slicing concept, but discarded it for lacking gameplay depth, and a Contra-style shooter, which proved too technically complex for our project scope.
 
-However, through group discussion and evaluation, we identified limitations in both approaches. The slicing game, while easy to implement, lacked sufficient depth and long-term engagement. In contrast, the Contra-style game introduced significant technical and design challenges, including complex level design, character movement systems, and a large demand for art assets, making it difficult to complete within the project scope.
-
-As a result, we shifted our focus toward an arcade-style resource collection game inspired by Gold Miner, which provided a balanced middle ground between simplicity and depth. This direction allowed us to emphasize core mechanics such as timing, precision, and risk–reward decision-making, while maintaining a manageable development scope.
-
-The paper prototyping phase played a crucial role in refining our concept. By simulating gameplay manually, we validated the effectiveness of the core loop and improved the balance between challenge and reward. Feedback from peer groups further confirmed the clarity and engagement of our design. Consequently, we finalized Deep Sea Prospector, focusing on intuitive controls, satisfying feedback, and a scalable gameplay loop.
+Instead, we chose a resource collection model inspired by Gold Miner. This approach offered a manageable development scope while still emphasizing timing, precision, and risk-reward mechanics. After refining the game's balance through paper prototyping and positive peer feedback, we finalized Deep Sea Prospector, focusing on intuitive controls, satisfying feedback, and a scalable core loop.
 
 
 ### 3.2 Stakeholder table
@@ -187,11 +183,11 @@ Figure 7: Stakeholder Diagram
 
 ### 3.3 Reflection
 
-During the development of Deep Sea Prospector, our team adopted a Value vs Effort Matrix to prioritize tasks and guide decision-making. This approach allowed us to focus on high-value, low-effort features while avoiding unnecessary investment in low-value, high-effort elements, such as overly complex visual designs. As a result, we were able to manage our time effectively and ensure steady progress throughout the project.
+To manage development effectively, we utilized a Value vs. Effort Matrix, prioritizing high-impact, low-effort features to maintain steady progress while avoiding overly complex visual designs.
 
-We also refined our understanding of user acceptance criteria to better define core gameplay requirements. For example, the hook must swing at a consistent speed and respond instantly to player input, ensuring responsive and intuitive controls. In addition, progression is determined by whether the player reaches the target score within the time limit, clearly defining success and failure conditions. Advanced gameplay elements, such as Deep Sea Mode, introduce additional challenges including reduced visibility and hostile creatures, enhancing the risk–reward dynamic. Special objectives, such as capturing rare targets within limited time, further increase gameplay depth.
+We also established strict user acceptance criteria to define our core gameplay. This ensured instantly responsive hook controls and clear, time-limited score progression. To deepen the risk-reward dynamic, we introduced advanced elements like "Deep Sea Mode," featuring reduced visibility, hostile creatures, and rare time-sensitive targets.
 
-Finally, our stakeholder analysis highlighted the importance of balancing user experience with technical feasibility and visual design. By considering not only players but also developers and designers, we recognized that successful game development requires integrating usability, implementation constraints, and aesthetic quality into a coherent design.
+Finally, stakeholder analysis guided us in balancing player experience with technical feasibility and aesthetics, ensuring the game seamlessly integrated usability with practical implementation constraints.
 
 ### 3.4 Use-Case Diagram
 
@@ -203,13 +199,9 @@ Figure 8: Use Case Diagram
   
 </div>
 
-We used a use case diagram to identify and structure the core functional components of Deep Sea Prospector, providing a clear overview of player interactions and system behavior. During the design phase, we discussed and defined the primary use cases based on our gameplay loop and user stories, ensuring that all essential features were captured.
+We utilized a use case diagram to structure the core components of Deep Sea Prospector and clearly map player interactions. The diagram outlines a linear flow: players select a game mode and difficulty, then engage in the central loop of controlling the hook, avoiding hazards, and accumulating points within a time limit.
 
-The diagram illustrates a primarily linear interaction flow. Players begin by starting the game, selecting the game mode (single-player or multiplayer), and choosing a difficulty level. Once the game starts, the core gameplay revolves around controlling the hook to capture objects, avoid hazards, and accumulate score within a limited time. These actions form the central gameplay loop and are represented as key use cases.
-
-Additional systems, such as the shop and progression mechanics, are also included. After completing a level, players can enter the shop to purchase items that enhance performance in subsequent levels. Furthermore, advanced features such as unlocking the “Deep Sea Mode,” as well as viewing the leaderboard and collection system, extend the gameplay experience beyond the core loop.
-
-Although additional features were introduced during development, the use case diagram remained a stable foundation, supporting iterative refinement while maintaining a clear structure of system functionality.
+It also captures secondary systems extending beyond the core loop, such as post-level shop purchases, unlocking "Deep Sea Mode," leaderboards, and collections. Ultimately, this diagram served as a stable foundation, guiding our iterative development while keeping the system's overall functionality clearly defined.
 
 
 ### 3.5 Prioritised Feature Breakdown
@@ -261,18 +253,18 @@ Table 4: Prioritised Feature Breakdown
 
 ### 4.1 System Architecture Overview
 
-Deep Sea Prospector adopts a modular, object-oriented architecture with clearly defined responsibilities. The design follows the Single Responsibility Principle, while emphasizing high cohesion and low coupling to ensure maintainability, scalability, and ease of future extension.
+## Technical Architecture
 
-The system is structured into several logical layers, including game state management, level control, player progression, and core gameplay mechanics. This separation of concerns allows each subsystem to evolve independently without affecting the overall stability of the application.
+*Deep Sea Prospector* utilizes a modular, object-oriented architecture built on the **Single Responsibility Principle**. By separating game state, level control, player progression, and core mechanics into distinct logical layers, we ensure high cohesion and low coupling. This allows subsystems to evolve independently, keeping the project maintainable and scalable.
 
-Core components include:
+### Core Components
 
-- **GameManager** — Acts as the central controller of the system, coordinating all major subsystems and managing transitions between different game states, such as the title screen, gameplay, shop, and result screens. 
-- **LevelManager** — Responsible for configuring level-specific parameters, including target scores, time limits, difficulty scaling, and the dynamic spawning of sea creatures and items. 
-- **ShopManager** — Manages all shop-related functionalities, including refreshing available items, handling purchase transactions, and maintaining a record of items currently owned by the player.
-- **Player** — Handles player-related data and progression, including gold accumulation, upgrade management, and input handling during gameplay. 
-- **Hook** — Implements the core gameplay mechanics, including swinging motion, launch behavior, collision detection, item capture, and retrieval, incorporating weight-based physics for more realistic interactions. 
-- **SeaItems** — An abstract base class that defines a unified interface for all interactable objects (e.g., fish, treasures, and obstacles), enabling polymorphic behavior and consistent interaction handling across different item types.
+* **`GameManager`**: Acts as the central controller, coordinating major subsystems and seamlessly managing state transitions (e.g., title screen, gameplay, shop, results).
+* **`LevelManager`**: Configures level-specific parameters like target scores, time limits, and difficulty scaling, while handling the dynamic spawning of creatures and items.
+* **`ShopManager`**: Oversees the in-game economy by refreshing available items, processing purchase transactions, and tracking player inventory.
+* **`Player`**: Manages player progression, tracking gold accumulation, active upgrades, and gameplay input.
+* **`Hook`**: Drives the core mechanics. It handles the swinging motion, launch behavior, collision detection, and incorporates weight-based physics for realistic item retrieval.
+* **`SeaItems`**: An abstract base class defining a unified interface for all interactable entities (treasures, fish, obstacles), enabling polymorphic behavior and consistent interaction logic.
 
 
 ### 4.2 Class Diagram
@@ -349,15 +341,13 @@ This diagram illustrates the logic governing win/loss conditions and the subsequ
 
 ### 4.4 Design Patterns and Principles
 
-Our architecture applies key design patterns:
+Our architecture applies several key design patterns to ensure scalability and maintainability:
 
-**State Pattern**: To manage the complex game flow, the GameManager utilizes a flow control between states (TITLE, PLAYING, SHOP, LEVEL_RESULT). Similarly, the Hook employs behavior states—IDLE, MOVING_DOWN, and MOVING_UP—to encapsulate movement logic and prevent input conflicts during retrieval.
+* **State Pattern**: `GameManager` manages game flow transitions (TITLE, PLAYING, SHOP, RESULT), while the `Hook` uses behavior states (IDLE, MOVING_DOWN, MOVING_UP) to encapsulate logic and prevent input conflicts.
+* **Factory Pattern & Inheritance**: `LevelManager` dynamically spawns entities using a Factory pattern. The `SeaItem` base class ensures high reusability and simplifies adding new marine objects.
+* **Observer Pattern**: Event callbacks (e.g., `onCollision`, `returnComplete`) create loose coupling between the `Hook` and items, facilitating easy extension and independent testing.
 
-**Factory Pattern & Inheritance**: To facilitate Procedural Generation, the LevelManager uses a Factory Pattern for dynamic SeaItem creation. By establishing an inheritance hierarchy (with SeaItem as the base class for SmallFish, Treasure, etc.), we achieved high reusability and simplified the addition of new marine entities.
-
-**Observer Pattern**: Enabling loose coupling between Hook and TargetItem via event callbacks (onCollision, returnComplete). This modular design facilitates easy extension of new features and independent testing of components.
-
-Consistent with Agile methodologies, our design evolved through iterative testing. Initially, our controller logic was monolithic; however, we later separated rendering from core physics to ensure smooth performance in "Deep Sea Mode." This modular approach allowed for independent component testing and provided the flexibility to adjust the game's "risk-reward" balance without disrupting the foundational source code.
+**Agile Evolution:** Following Agile methodologies, we refactored our initially monolithic controller logic by separating rendering from core physics. This modularity ensured smooth performance (especially in "Deep Sea Mode") and allowed us to safely tune the risk-reward balance without disrupting foundational code.
 
 
 ---
@@ -368,7 +358,11 @@ Consistent with Agile methodologies, our design evolved through iterative testin
 
 ### 5.1 Overview
 
-Deep Sea Prospector was implemented using P5.js, a JavaScript library that provides comprehensive tools for creative coding and interactive graphics. The implementation focused on three connected goals: creating responsive physics-based hook mechanics, building a mathematically guided balance framework for progression across Shallow Water and Deep Sea modes, and adding a lightweight cloud-backed leaderboard with a fish collection index to strengthen replay motivation. Our development process therefore centered on three technical challenges: (1) implementing realistic hook physics with multi-state collision detection, (2) designing fair score and economy scaling using an expected-value perspective, and (3) structuring shared run records so players can compare results and collections without introducing heavy data-fetch overhead.
+*Deep Sea Prospector* was built using **P5.js**. Our implementation focused on three interconnected goals, which drove our primary technical challenges:
+
+* **Physics & Collision:** Implementing responsive, physics-based hook mechanics with multi-state collision detection.
+* **Progression Balancing:** Designing fair score and economy scaling across *Shallow Water* and *Deep Sea* modes using a mathematically guided, expected-value framework.
+* **Cloud Integration:** Building a lightweight cloud-backed leaderboard and fish collection index to boost replayability without introducing heavy data-fetch overhead.
 
 ### 5.2 Technical Challenge 1: Physics-Based Hook Mechanics and Collision System
 
@@ -402,9 +396,10 @@ if (d < item.catchRadius) {
 }
 ```
 
-The system handles multiple object types with distinct collision behaviors: fish and treasures trigger capture and attachment to the hook; rocks immediately stop descent and begin retraction; sharks intercept and destroy captured items during retrieval. Each object type has customized `catchRadius` values—for example, BigFish uses `width * 0.35` for tighter hitboxes (approximately 38-52 pixels), creating strategic depth where visual size doesn't always match catchability. This design choice rewards skilled players who understand the precise collision boundaries.
-
-Additionally, we implemented an overlap prevention system during level initialization using `checkOverlap()` to ensure items spawn with sufficient spacing, preventing frustrating scenarios where multiple items occupy the same position. This spatial management system checks distances between all static items (treasures, rocks, pearls) during generation, maintaining minimum separation distances of 10-20 pixels depending on item type.
+The system manages multiple object types with distinct collision and spawn behaviors:
+* **Behavior Rules:** Fish and treasures attach to the hook, rocks trigger immediate retraction, and sharks destroy captured items.
+* **Custom Hitboxes (`catchRadius`):** Objects use tailored bounds (e.g., tighter hitboxes for `BigFish`). This adds strategic depth by rewarding players who master true collision boundaries over visual size.
+* **Overlap Prevention:** A `checkOverlap()` system runs during initialization to ensure all static items (treasures, rocks, pearls) maintain a 10-20 pixel separation, avoiding frustrating spawn clusters.
 
 **Weight-Based Physics**
 
@@ -644,15 +639,15 @@ The SUS confirmed that both difficulty levels offered strong overall usability, 
 
 ### 7.1 Sustainability Analysis Framework (SusAF) Results
 
-We evaluate Deep Sea Prospector using the Sustainability Awareness Framework (SusAF) across five dimensions: technical, environmental, individual, social, and economic.
+We evaluated *Deep Sea Prospector* using SusAF across five key dimensions:
 
-- **Technical sustainability.** Our object-oriented architecture (`GameManager`, `LevelManager`, `Hook`, `SeaItem` hierarchy) supports maintainability and controlled evolution. This modular design reduces technical debt and makes feature extension (new fish, hazards, and shop items) less costly over time.
-- **Environmental sustainability.** We reduce unnecessary computation during real-time rendering and interactions, which lowers device energy use. For example, resource-intensive visual effects are applied selectively, and gameplay logic avoids redundant checks for non-relevant objects.
-- **Individual sustainability.** We address privacy, wellbeing, and accessibility together. For privacy, leaderboard records only keep minimal non-sensitive fields (`player_name`, `score`, `levels_completed`, and structured catch data), with no email, location, or financial identifiers. For wellbeing, the game includes adjustable screen brightness (`brightnessLevel`) to reduce eye strain in long sessions. For accessibility and agency, controls remain simple (keyboard-first interaction, clear state transitions), lowering entry barriers for new players.
-- **Social sustainability.** Two-player mode and a shared leaderboard strengthen social interaction, comparison, and replay motivation. These systems support a sense of community by enabling cooperative/competitive play and allow players arond different location to be visible to compete .
-- **Economic sustainability.** Cloud data access is optimized through paginated leaderboard queries (`limit`/`offset`) and compact score records. This reduces unnecessary bandwidth and storage pressure, helping keep infrastructure usage and operating cost efficient.
+* **Technical:** A modular, object-oriented architecture (`GameManager`, `Hook`, `SeaItem`) minimizes technical debt and simplifies future feature extensions.
+* **Environmental:** Optimized computation and selective rendering reduce device energy consumption during gameplay.
+* **Individual:** Protects privacy (minimal data collection without sensitive identifiers), supports wellbeing (adjustable brightness), and ensures accessibility (simple, keyboard-first controls).
+* **Social:** Co-op modes and shared leaderboards foster community, interaction, and friendly competition.
+* **Economic:** Optimized cloud access (paginated queries, compact records) reduces bandwidth, storage, and long-term operating costs.
 
-Overall, the system balances immediate playability goals with longer-term sustainability outcomes: lower technical maintenance overhead, lighter cloud usage, and inclusive player experience.
+Overall, the design balances immediate playability with long-term sustainability: lowering maintenance and cloud costs while ensuring an inclusive experience.
 <br>
 <div align="center">
   <font color="#888888">Figure 22. The Sustainability Awareness Diagram</font>
@@ -699,19 +694,15 @@ For future work, we plan to formalise sustainability testing metrics (for exampl
 
 
 
-### 8.1 Teamwork
+### 8.1 Teamwork & Development Workflow
 
-We followed the course week by week and quickly applied what we learned to our team workflow and development process. For example, we kept each task small and specific, asked everyone to commit frequently even for very minor changes, and started creating weekly branches from the second week to manage the game’s versions.
+Our process evolved iteratively, applying agile principles to manage increasing complexity:
 
-From the third week, we clearly defined the main entry points and scenes of the game, such as the start input page, the game shop, the game manager for score control, the sea item system for generating in-game objects, and the settlement page. Based on that structure, we first built the most basic code framework to make sure everyone worked from a shared standard when developing later on.
-
-During the first five weeks, we did not assign fixed roles in detail. Instead, we divided the work broadly by function: two members focused on the game start and end screens, as well as the early development of the game shop and backend setup, while three members worked on the core game mechanics such as difficulty levels, scene variation, random fish generation, and level design. At the same time, every team member kept playing the game, giving feedback, and asking the responsible person to improve the related part.
-
-As the project progressed, the game evolved from basic interaction logic into a pixel-art style from around week seven. After that, everyone began to optimize their own parts, and we also started sharing assets with one another to further unify the visual style and interaction design. Our roles gradually became more specialized, including front-end asset optimization, game mechanic algorithms, background sound effects, and backend development improvements.
-
-After two to three weeks of playtesting, especially when we moved into qualitative and quantitative evaluation, the whole team focused on improving the scoring system and the shop item exchange algorithm to balance difficulty and playability. We adjusted the game from a linear algorithm that was considered too easy to an exponential one that was then judged too difficult, and we also improved the page display and navigation between scenes so the game became more playable and reasonable.
-
-Because the tasks became more complex over time, there were not many conflicting opinions at the beginning. However, as different scenes and features started interacting with each other, more disagreements naturally appeared. In those situations, we communicated fully, exchanged opinions, explained our reasoning clearly, and finally reached a consensus version as the final one.
+* **Version Control & Structure:** We enforced small task scopes, frequent commits, and weekly branching. By week three, we established a shared code framework (Start, Shop, `GameManager`, `SeaItem`, Results) to standardize development.
+* **Early Phase (Weeks 1-5):** Tasks were divided broadly into UI/Backend and Core Mechanics. We avoided rigid roles early on; instead, all members continuously playtested and provided cross-functional feedback.
+* **Role Specialization (Week 7+):** As we transitioned to a unified pixel-art style, roles specialized into frontend asset optimization, mechanic algorithms, sound design, and backend refinement.
+* **Balancing & Polish:** Following qualitative and quantitative playtesting, we heavily refined the scoring system and shop economy—iteratively testing linear vs. exponential algorithms to find the right difficulty balance.
+* **Conflict Resolution:** As system integrations became more complex, natural disagreements arose. We resolved these through open communication, explaining reasoning clearly, and finalizing features through team consensus.
 <br>
 <div align="center" style="white-space: nowrap;">
   
