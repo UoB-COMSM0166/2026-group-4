@@ -631,6 +631,91 @@ A Wilcoxon signed-rank test was conducted to compare SUS scores between the Shal
 
 The SUS confirmed that both difficulty levels offered strong overall usability, but it was less informative for driving concrete design changes than our qualitative observations and NASA TLX workload ratings. Instead, we used the SUS primarily as a summative check to validate that the game provided a positive user experience across conditions. We also noticed indications of questionnaire fatigue, likely because participants completed the SUS immediately after the NASA TLX, which may have reduced how carefully they responded. for the future conduction , we plan to include short breaks or separate the SUS and NASA TLX into different sessions to lower cognitive load and improve response quality.
 
+### 6.3 Black Box Testing
+
+Black box testing was conducted by simulating realistic player actions and verifying externally observable outcomes only (UI feedback, score changes, state transitions, timing behaviour, and audio/visual responses), without relying on internal code structure.
+
+#### Core Hook Mechanics
+
+| Test Case | Input | Expected Output | Result |
+| :-- | :-- | :-- | :-- |
+| BB-H1 | Press hook key while hook is swinging | Hook transitions from idle swing to downward deployment | Pass |
+| BB-H2 | Hook collides with fish/treasure | Object attaches and hook starts retracting | Pass |
+| BB-H3 | Hook reaches top with attached object | Score updates correctly and object is removed from scene | Pass |
+
+#### Level Goal and Progression
+
+| Test Case | Input | Expected Output | Result |
+| :-- | :-- | :-- | :-- |
+| BB-P1 | Reach target score before timer ends | Level result shows success and allows next progression step | Pass |
+| BB-P2 | Timer reaches zero below target score | Level result shows failure and run ends correctly | Pass |
+| BB-P3 | Enter next level from shop flow | New level initializes with updated target and timer | Pass |
+
+#### Shop and Item Effects
+
+| Test Case | Input | Expected Output | Result |
+| :-- | :-- | :-- | :-- |
+| BB-S1 | Purchase an affordable item | Gold decreases by item cost and item is marked purchased | Pass |
+| BB-S2 | Purchase with insufficient gold | Purchase is blocked and "Not enough Gold" feedback is shown | Pass |
+| BB-S3 | Buy temporary effect item (e.g., Sand Clock/Laser Sight) | Corresponding gameplay effect applies in subsequent level | Pass |
+| BB-S4 | Buy permanent item (e.g., Submarine/Club Card) | Permanent unlock persists across later levels in the same run | Pass |
+
+#### Deep Sea Mode and Hazards
+
+| Test Case | Input | Expected Output | Result |
+| :-- | :-- | :-- | :-- |
+| BB-D1 | Unlock and enter Deep Sea mode | Darkness mask and deep-sea presentation are applied | Pass |
+| BB-D2 | Shark intersects retracing hooked target | Target is removed/stolen and score reward is not granted | Pass |
+| BB-D3 | Continue gameplay under limited visibility | Core controls and collisions remain responsive and consistent | Pass |
+
+#### Multiplayer Behaviour
+
+| Test Case | Input | Expected Output | Result |
+| :-- | :-- | :-- | :-- |
+| BB-M1 | Start two-player mode and deploy both hooks | P1 and P2 hooks operate independently with separate controls | Pass |
+| BB-M2 | Both players catch objects in same level | Individual balances update and total score remains consistent | Pass |
+| BB-M3 | Open shop in two-player run | Shared affordability and purchase outcomes are applied correctly | Pass |
+
+#### Leaderboard and Record Submission
+
+| Test Case | Input | Expected Output | Result |
+| :-- | :-- | :-- | :-- |
+| BB-L1 | Finish run and submit score | Entry appears in leaderboard with correct score and level metadata | Pass |
+| BB-L2 | Submit catch history and per-level fields | Structured run data is retained and available for later display | Pass |
+| BB-L3 | Enter leaderboard view repeatedly | Ranking list remains sorted and loads reliably without UI breakage | Pass |
+
+### 6.4 White Box Testing
+
+White box testing was conducted by designing tests from internal logic paths (branches, state transitions, boundary conditions, and fallback handling) in core modules, rather than testing only external behaviour.
+
+#### Targeted Internal Areas
+
+- Hook state transitions (`IDLE_SWINGING`, `MOVING_DOWN`, `MOVING_UP`)
+- Collision and reward branches in `LevelManager` (fish, treasure, rock/fishbone, shark steal)
+- Pricing and discount branches in `ShopItem` and purchase flow in `ShopManager`
+- State-transition side effects in `GameManager` (UI sync and state-dependent flow)
+- Local/cloud fallback logic in `HighScoreManager`
+
+#### Representative White Box Cases
+
+| Test Case | Module | Internal Path / Branch | Input / Setup | Expected Internal Outcome | Result |
+| :-- | :-- | :-- | :-- | :-- | :-- |
+| WB-H1 | `Hook` | `deployDown()` transition guard | Trigger deploy from `IDLE_SWINGING` and non-idle states | Valid transition only from idle state | Pass |
+| WB-H2 | `Hook` | Retract speed branch | Retract with and without `attachedItem` | Weighted branch used only when item is attached | Pass |
+| WB-L1 | `LevelManager` | Return-item reward branch | Simulate fish, treasure, rock, and fishbone returns | Correct score/effect branch executed per item type | Pass |
+| WB-L2 | `LevelManager` | Shark collision branch | Simulate shark overlap with hooked fish vs rock/fishbone | Fish can be stolen; rock/fishbone ignored | Pass |
+| WB-S1 | `ShopItem` | Inflation-rate branch by item category | Create items with different names across levels | Correct inflation branch applied (`0`, `0.03`, `0.05`, default) | Pass |
+| WB-S2 | `ShopItem` | Discount + club-card branch | Trigger random discount path and club-card path | `costPrice` reflects all applicable discount rules | Pass |
+| WB-G1 | `GameManager` | State-transition branch | Switch across menu/playing/shop/result states | Transition side effects occur in correct branch only | Pass |
+| WB-HS1 | `HighScoreManager` | Remote-fail fallback path | Force fetch failure in score retrieval | Fallback to local storage path without crash | Pass |
+
+#### Coverage Focus
+
+- **Branch coverage:** decision-heavy logic in `LevelManager`, `ShopItem`, `GameManager`
+- **State coverage:** gameplay and hook lifecycle transitions
+- **Boundary coverage:** score/time thresholds and capped level-based calculations
+- **Fallback coverage:** cloud request failure and local persistence paths
+
 ---
 
 <a id="7-sustainability"></a>
