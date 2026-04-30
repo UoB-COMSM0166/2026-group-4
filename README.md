@@ -456,10 +456,10 @@ Using this framework, we systematically balanced all item scores. For example, S
   
   <img src="docs/gif/deep.gif" width="90%" alt="Deep Sea Mode">
 </div>
-<br>
+
 ### 5.4 Technical Challenge 3: Shared Leaderboard and Fish Collection Index
 
-**Overview and Design Goal**
+
 
 Beyond the two core technical challenges above, we also implemented a shared leaderboard and a collection-style fish gallery to strengthen replay motivation and social comparison. The key design goal was to keep cloud synchronization lightweight while still preserving meaningful run history.
 <br>
@@ -472,8 +472,8 @@ Beyond the two core technical challenges above, we also implemented a shared lea
   <font color="#888888">Figure 16: Cloud-synced player records with structured JSON data in Supabase</font><br><br>
   <img src="docs/evaluation report figure/data.png" width="90%" alt="Live Database Records">
 </div>
-<br>
-**Cloud-Synced Score Records with Structured Catch Data**
+
+#### Cloud-Synced Score Records with Structured Catch Data
 
 The leaderboard is managed by `HighScoreManager`, which persists local scores in `localStorage` and synchronizes to Supabase on the production deployment. Instead of uploading image assets or bulky binary payloads, each score entry stores structured JSON fields (player name, score, difficulty, mode, and `catch_history`). This design keeps API requests small and fast while preserving the data needed for post-run analysis and display.
 
@@ -494,8 +494,8 @@ body: JSON.stringify({
   <font color="#888888">Figure 17: Cloud-synced leaderboard data structure</font><br><br>
   <img src="docs/gif/board.gif" width="70%" alt="Leaderboard Database Demo">
 </p>
-<br>
-**Fish Collection Gallery via Indexed Keys**
+
+#### Fish Collection Gallery via Indexed Keys
 
 To support the gallery efficiently, catches are converted into stable indexed keys at runtime (for example, `fish1`–`fish64`, plus named special fish). `LevelManager` accumulates these counts in `fishCaught`, and `GameManager` merges them into session-wide history before submission. The gallery then maps those keys to preloaded sprite arrays (`imgSmallFishes`, `imgBigFishes`, and special fish assets), so rendering a player's collection requires only numeric counts from the database, not remote image downloads.
 
