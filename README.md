@@ -457,7 +457,9 @@ Using this framework, we systematically balanced all item scores. For example, S
   <img src="docs/gif/deep.gif" width="90%" alt="Deep Sea Mode">
 </div>
 <br>
-### 5.4 Additional Implementation Point: Shared Leaderboard and Fish Collection Index
+### 5.4 Technical Challenge 3: Shared Leaderboard and Fish Collection Index
+
+**Overview and Design Goal**
 
 Beyond the two core technical challenges above, we also implemented a shared leaderboard and a collection-style fish gallery to strengthen replay motivation and social comparison. The key design goal was to keep cloud synchronization lightweight while still preserving meaningful run history.
 <br>
